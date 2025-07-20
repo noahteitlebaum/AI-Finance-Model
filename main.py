@@ -12,9 +12,22 @@ load_dotenv()
 API_KEY = os.getenv("ANTHROPIC_API_KEY")
 client = anthropic.Client(api_key=API_KEY)
 
-TICKERS = ["AAPL", "TSLA", "AMZN", "GOOG", "MSFT", "NFLX", "META", "NVDA", "AMD", "INTC"]
 start_date = date(2023, 7, 19)
 end_date = date.today()
+
+def load_tickers(filepath: str) -> list[str]:
+    try:
+        with open(filepath, "r") as f:
+            tickers = []
+            for line in f:
+                clean_line = line.strip()
+                if clean_line:
+                    tickers.append(clean_line.upper())
+        
+        return tickers
+    except FileNotFoundError:
+        print(f"❌ File not found: {filepath}")
+        return []
 
 def print_stock_table(df: pd.DataFrame, title: str) -> None:
     if df.empty:
@@ -37,8 +50,10 @@ def print_stock_table(df: pd.DataFrame, title: str) -> None:
     print(tabulate(display_df, headers="keys", tablefmt="fancy_grid"))
 
 if __name__ == "__main__":
+    TICKERS = load_tickers("data/tickers.txt")
+
     # Read the combined data and print latest date info
-    # data.download_data(TICKERS, start_date, end_date)
+    data.download_data(TICKERS, start_date, end_date)
 
     df = data.read_stocks_data()
     latest_date = df["Date"].max()
