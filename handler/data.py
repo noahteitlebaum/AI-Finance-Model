@@ -111,4 +111,9 @@ def get_tickers_to_download(desired: list[str], downloaded: set[str]) -> list[st
     Checks for the difference between downloaded tickers and tickers that we have
     stored withind data/tickers.txt
     """
-    return [ticker for ticker in desired if ticker not in downloaded]
+    tickers = []
+    for ticker in desired:
+        if ticker not in downloaded:
+            tickers.append(ticker)
+
+    return tickers
