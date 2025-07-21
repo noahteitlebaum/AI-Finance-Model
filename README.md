@@ -2,11 +2,13 @@
 
 1. Get the data from yfinance !DONE
 2. Format the data !CURRENT
+3. Run the model
+4. Integrate the AI
+5. Create user interface
+
+- ensure scalability
 
 ## ISSUES
-- Is the data formatting correctly?
-- Are we gathering enough data?
-- Potental user errors even though were the only users
 
 ## STACK 
 
