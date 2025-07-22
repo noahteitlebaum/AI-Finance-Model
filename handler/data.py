@@ -10,10 +10,8 @@ def download_data(tickers: list[str], start: date, end: date) -> None:
     """
     Downloads historical stock data for the given tickers between start and end dates
     using yfinance, and saves each ticker's data to a separate Parquet file.
-
     """
-    print(f"Downloading data for tickers: {tickers}")
-
+    
     # Ensure data directory exists
     os.makedirs("data", exist_ok=True)
 
@@ -42,6 +40,7 @@ def read_all_tickers(data_dir:str="data") -> dict[str, pd.DataFrame]:
 
     Each file is expected to be named as <ticker>.parquet.
     """
+
     stock_data = {}
 
     # Iterate through the downloaded tickers
@@ -56,6 +55,7 @@ def read_all_tickers(data_dir:str="data") -> dict[str, pd.DataFrame]:
                 stock_data[ticker] = df
             except Exception as e:
                 print(f"Failed to read {filepath}: {e}")
+
     return stock_data
 
 def read_specified_tickers(tickers: list[str], data_dir:str="data") -> dict[str, pd.DataFrame]:
@@ -92,6 +92,7 @@ def get_desired_tickers(file_path: str = "tickers.txt") -> list[str]:
     """
     Reads tickers from a file.
     """
+
     with open(file_path, 'r') as f:
         return [line.strip().upper() for line in f if line.strip()]
     
@@ -100,6 +101,7 @@ def get_downloaded_tickers(data_dir:str="data") -> set[str]:
     Given a list of tickers, return those which have not yet been downloaded
     based on presence of corresponding <ticker>.parquet files in `data_dir`.
     """
+
     return {
         filename.removesuffix(".parquet")
         for filename in os.listdir(data_dir)
@@ -111,6 +113,7 @@ def get_tickers_to_download(desired: list[str], downloaded: set[str]) -> list[st
     Checks for the difference between downloaded tickers and tickers that we have
     stored withind data/tickers.txt
     """
+
     tickers = []
     for ticker in desired:
         if ticker not in downloaded:
