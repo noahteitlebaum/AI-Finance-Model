@@ -10,7 +10,6 @@ load_dotenv()
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 
-
 def ask_ai_about_stock(ticker: str, df: pd.DataFrame) -> str:
     """
     Uses Claude to analyze the historical stock data and provide an outlook.

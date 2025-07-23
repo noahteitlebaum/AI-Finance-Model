@@ -64,7 +64,7 @@ if __name__ == "__main__":
             state = GameState.MAIN
 
         elif state == GameState.DISPLAY:
-            menuhandler.handle_display(ask_ai_about_stock, ticker_dict)
+            menuhandler.handle_display(ticker_dict)
             state = GameState.MAIN
 
         elif state == GameState.QUIT:
