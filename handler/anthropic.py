@@ -1,4 +1,4 @@
-import handler.anthropic as anthropic 
+import anthropic
 import pandas as pd
 import os
 
