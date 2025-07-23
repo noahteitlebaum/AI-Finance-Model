@@ -5,6 +5,7 @@ from datetime import date
 # Local Dependencies
 from . import data
 from . import formatter
+from . import anthropic
 
 def menu(): 
     print("\n--- MAIN MENU ---")
@@ -42,8 +43,7 @@ def handle_train():
     print("\n[TRAIN MODE]")
     input("Press ENTER to simulate training. Type ESC to return to menu.\n")
 
-
-def handle_display(func, ticker_dict: dict[str, pd.DataFrame]):
+def handle_display(ticker_dict: dict[str, pd.DataFrame]):
     """
     """
 
@@ -58,7 +58,7 @@ def handle_display(func, ticker_dict: dict[str, pd.DataFrame]):
         # Get AI insights
         print(f"\nAI Insight for {ticker}:")
         try:
-            insight = func(ticker, df)
+            insight = anthropic.ask_ai_about_stock(ticker, df)
             print(insight)
         except Exception as e:
             print(f"Error fetching insight: {e}")
