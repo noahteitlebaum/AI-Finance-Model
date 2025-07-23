@@ -1,14 +1,24 @@
 import anthropic
 import pandas as pd
 import os
+import platform
 
 from datetime import date
+from enum import Enum
 from tabulate import tabulate
 from dotenv import load_dotenv
 
 # Local dependencies
-import handler.data as datahandler
-import handler.format as formatter
+import handler.menu as menuhandler
+import handler.formatter as formatter
+
+# Environment keys
+class GameState(Enum):
+    MAIN = "MAIN"
+    DOWNLOAD = "DOWNLOAD"
+    TRAIN = "TRAIN"
+    DISPLAY = "DISPLAY"
+    QUIT = "QUIT"
 
 # Import environment variables and setup the anthropic interface
 load_dotenv()
@@ -44,30 +54,47 @@ def ask_ai_about_stock(ticker: str, df: pd.DataFrame) -> str:
     return response.content[0].text
 
 if __name__ == "__main__":
-    # Get desired tickers from data dir
-    desired_tickers = datahandler.get_desired_tickers()
+    state = GameState.MAIN
+    running = True
 
-    # Check already downloaded
-    downloaded_tickers = datahandler.get_downloaded_tickers()
+    ticker_dict = pd.DataFrame()
 
-    # Compute missing tickers
-    tickers_to_download = datahandler.get_tickers_to_download(desired_tickers, downloaded_tickers)
+    while running:
+        if state == GameState.MAIN:
+            # Clears the terminal
+            if platform.system() == "Windows":
+                os.system("cls")
+            else:
+                os.system("clear")
+            
+            menuhandler.menu()
+            choice = input("Enter choice: ").strip().upper()
 
-    # Read the combined data and print latest date info
-    datahandler.download_data(tickers_to_download, start_date, end_date)
+            if choice == "1":
+                state = GameState.DOWNLOAD
+            elif choice == "2":
+                state = GameState.TRAIN
+            elif choice == "3":
+                state = GameState.DISPLAY
+            elif choice == "4":
+                state = GameState.QUIT
+            elif choice == "ESC":
+                running = False
+            else:
+                print("Invalid choice. Please enter 1-4 or ESC.")
 
-    # This is a dictionary now
-    ticker_dict = datahandler.read_all_tickers()
+        elif state == GameState.DOWNLOAD:
+            ticker_dict = menuhandler.handle_download(start_date, end_date)
+            state = GameState.MAIN
 
-    for ticker, df in ticker_dict.items():
-        latest_date = df["Date"].max()
-        latest_df = df[df["Date"] == latest_date]
-        formatter.print_stock_table(latest_df, title=f"📊 Latest Stock Data Per Ticker ({latest_date.strftime('%Y-%m-%d')})")
+        elif state == GameState.TRAIN:
+            menuhandler.handle_train()
+            state = GameState.MAIN
 
-        # Get AI insights
-        print(f"\nAI Insight for {ticker}:")
-        try:
-            insight = ask_ai_about_stock(ticker, df)
-            print(insight)
-        except Exception as e:
-            print(f"Error fetching insight: {e}")
+        elif state == GameState.DISPLAY:
+            menuhandler.handle_display(ask_ai_about_stock, ticker_dict)
+            state = GameState.MAIN
+
+        elif state == GameState.QUIT:
+            print("Exiting program.")
+            running = False
