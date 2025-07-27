@@ -88,6 +88,7 @@ def train_on_all_tickers(stock_data: dict[str, pd.DataFrame]) -> dict[str, lgb.L
     Returns:
     dict: Dictionary mapping ticker symbols to their trained LightGBM models.
     """
+    
     models = {}
 
     for ticker, df in stock_data.items():

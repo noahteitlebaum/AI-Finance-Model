@@ -20,8 +20,6 @@ class GameState(Enum):
     DISPLAY = "DISPLAY"
     QUIT = "QUIT"
 
-
-# Starting and ending data for stock data gathering
 start_date = date(2023, 7, 19)
 end_date = date.today()
 
@@ -29,7 +27,7 @@ if __name__ == "__main__":
     state = GameState.MAIN
     running = True
 
-    ticker_dict = pd.DataFrame()
+    ticker_dict = {}
 
     while running:
         if state == GameState.MAIN:
@@ -60,7 +58,7 @@ if __name__ == "__main__":
             state = GameState.MAIN
 
         elif state == GameState.TRAIN:
-            menuhandler.handle_train()
+            menuhandler.handle_train(ticker_dict)
             state = GameState.MAIN
 
         elif state == GameState.DISPLAY:
@@ -68,5 +66,5 @@ if __name__ == "__main__":
             state = GameState.MAIN
 
         elif state == GameState.QUIT:
-            print("Exiting program.")
+            print("\nExiting program.")
             running = False
