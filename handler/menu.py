@@ -48,7 +48,7 @@ def handle_download(start_date: date, end_date: date) -> dict[str, pd.DataFrame]
 
 def handle_train(ticker_dict: dict[str, pd.DataFrame]):
     if len(ticker_dict) == 0:
-        print("\nNo data available. Please download stock data first.")
+        print("\nNo data available. Please download stock data first!")
         input("Press ANY KEY to return to the main menu...")
         return
 
@@ -57,12 +57,12 @@ def handle_train(ticker_dict: dict[str, pd.DataFrame]):
 
     trainer.train_and_save_models(ticker_dict)
     
-    print("\nTraining complete.")
+    print("\nTraining complete!")
     input("Press ANY KEY to return to the main menu...")
 
 def handle_display(ticker_dict: dict[str, pd.DataFrame]):
     if len(ticker_dict) == 0:
-        print("\nNo data available. Please download stock data first.")
+        print("\nNo data available. Please download stock data first!")
         input("Press ANY KEY to return to the main menu...")
         return
     
@@ -102,6 +102,6 @@ def handle_display(ticker_dict: dict[str, pd.DataFrame]):
         except Exception as e:
             print(f"Error making prediction: {e}")
         
-    print("\nDisplaying complete.")
+    print("\nDisplaying complete!")
     input("Press ANY KEY to return to the main menu...")
     return
