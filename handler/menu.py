@@ -15,13 +15,12 @@ def menu():
     print("2. Train Model")
     print("3. Display Results")
     print("4. Quit")
-    print("Type ESC at any time to return to this menu.")
 
 def handle_download(start_date: date, end_date: date) -> dict[str, pd.DataFrame]:
     """
     """
     print("\n[DOWNLOAD MODE]")
-    input("Press ENTER to simulate download. Type ESC to return to menu.\n")
+    input("Press ENTER to simulate download.\n")
 
     try:
         # Get desired tickers from data dir
@@ -36,7 +35,7 @@ def handle_download(start_date: date, end_date: date) -> dict[str, pd.DataFrame]
         # Read the combined data and print latest date info
         data.download_data(tickers_to_download, start_date, end_date)
 
-        print("\nData download complete.")
+        print("Data download complete.")
         input("Press ANY KEY to return to the main menu...")
 
         return data.read_all_tickers()
@@ -53,7 +52,7 @@ def handle_train(ticker_dict: dict[str, pd.DataFrame]):
         return
 
     print("\n[TRAIN MODE]")
-    input("Press ENTER to train models. Type ESC to return to menu.\n")
+    input("Press ENTER to train models.\n")
 
     trainer.train_and_save_models(ticker_dict)
     
@@ -67,7 +66,7 @@ def handle_display(ticker_dict: dict[str, pd.DataFrame]):
         return
     
     print("\n[DISPLAY MODE]")
-    input("Press ENTER to display. Type ESC to return to menu.\n")
+    input("Press ENTER to display.\n")
 
     for ticker, df in ticker_dict.items():
         latest_date = df["Date"].max()
